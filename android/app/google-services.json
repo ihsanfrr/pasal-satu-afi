@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "88883761743",
+    "project_id": "pasalsatu-afi",
+    "storage_bucket": "pasalsatu-afi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88883761743:android:c082059e8a36f480de503a",
+        "android_client_info": {
+          "package_name": "com.afi.pasalsatu.pasalsatu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFD0NkUaMHc4Tf_DUhe36hXYf1oRx7MEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
