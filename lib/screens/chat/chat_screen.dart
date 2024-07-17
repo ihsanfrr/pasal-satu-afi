@@ -21,78 +21,98 @@ class ChatScreen extends GetView<ChatController> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const GreetingWidget(),
-            const SizedBox(height: 30),
-            const SuggestionChatWidget(),
-            const SizedBox(height: 30),
-            const HistoryChatWidget(),
-            const SizedBox(height: 30),
-            Container(
-              padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.25,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 10,
-                    offset: const Offset(0, -3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  PSTextfield.input(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 5,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.send,
-                        color: PSColor.primary,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+      body: const SingleChildScrollView(
+        child: ConversationState(),
       ),
+    );
+  }
+}
+
+class ConversationState extends StatelessWidget {
+  const ConversationState({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class MainState extends StatelessWidget {
+  const MainState({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const GreetingWidget(),
+        const SizedBox(height: 30),
+        const SuggestionChatWidget(),
+        const SizedBox(height: 30),
+        const HistoryChatWidget(),
+        const SizedBox(height: 30),
+        Container(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.25,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 10,
+                offset: const Offset(0, -3),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              PSTextfield.input(
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 1,
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 1,
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                    width: 1,
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.send,
+                    color: PSColor.primary,
+                    size: 30,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

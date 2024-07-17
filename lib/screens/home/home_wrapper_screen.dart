@@ -39,7 +39,7 @@ class HomeWrapperScreen extends GetView<HomeWrapperController> {
                             : Colors.white.withOpacity(0.4),
                       ),
                       Text(
-                        "Home",
+                        "Beranda",
                         style: PSTypography.medium.copyWith(
                           color: controller.currentIndex == 0
                               ? Colors.white
@@ -70,7 +70,7 @@ class HomeWrapperScreen extends GetView<HomeWrapperController> {
                             : Colors.white.withOpacity(0.4),
                       ),
                       Text(
-                        "Profile",
+                        "Profil",
                         style: PSTypography.medium.copyWith(
                           color: controller.currentIndex == 1
                               ? Colors.white
