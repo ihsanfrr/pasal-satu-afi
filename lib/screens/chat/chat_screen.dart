@@ -14,11 +14,23 @@ class ChatScreen extends GetView<ChatController> {
         iconTheme: const IconThemeData(
           color: PSColor.primary,
         ),
-        title: Text(
-          "PasalSatu AI",
-          style: PSTypography.semibold.copyWith(
-            fontSize: 16,
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "PasalSatu AI",
+              style: PSTypography.semibold.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              "Konsultasikan Hukum dengan AI",
+              style: PSTypography.light.copyWith(
+                fontSize: 10,
+                color: PSColor.secondary,
+              ),
+            ),
+          ],
         ),
       ),
       body: const SingleChildScrollView(

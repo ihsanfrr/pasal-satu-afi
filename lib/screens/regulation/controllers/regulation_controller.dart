@@ -3,13 +3,13 @@ part of '../../screens.dart';
 class RegulationController extends GetxController {
   List<String> regulationNames = [
     "UU",
-    "PERPU",
+    "PERPPU",
     "PP",
     "PERPRES",
-    "PERBAN",
-    "PERDA",
     "PERMEN",
     "PERMENKUMHAM",
+    "PERBAN",
+    "PERDA",
   ];
 
   List<String> regulationTexts = [
@@ -17,9 +17,9 @@ class RegulationController extends GetxController {
     "Peraturan Pemerintah Pengganti Undang-undang",
     "Peraturan Pemerintah",
     "Peraturan Presiden",
-    "Peraturan Badan/Lembaga",
-    "Peraturan Daerah",
     "Peraturan Menteri",
     "Peraturan Menteri Hukum dan Hak Asasi Manusia",
+    "Peraturan Badan/Lembaga",
+    "Peraturan Daerah",
   ];
 }

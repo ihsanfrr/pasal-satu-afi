@@ -13,11 +13,23 @@ class RegulationScreen extends GetView<RegulationController> {
         iconTheme: const IconThemeData(
           color: PSColor.primary,
         ),
-        title: Text(
-          "Peraturan",
-          style: PSTypography.semibold.copyWith(
-            fontSize: 16,
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Peraturan",
+              style: PSTypography.semibold.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              "Peraturan Terbaru dan Penting di Indonesia",
+              style: PSTypography.light.copyWith(
+                fontSize: 10,
+                color: PSColor.secondary,
+              ),
+            ),
+          ],
         ),
         actions: [
           InkWell(
@@ -28,10 +40,7 @@ class RegulationScreen extends GetView<RegulationController> {
                 color: PSColor.primary,
               ),
             ),
-            onTap: () => showSearch(
-              context: context,
-              delegate: CustomSearch(),
-            ),
+            onTap: () => Get.toNamed(Routes.regulationSearch),
           ),
         ],
       ),
@@ -59,7 +68,10 @@ class RegulationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(Routes.regulationList),
+      onTap: () => Get.toNamed(
+        Routes.regulationList,
+        arguments: controller.regulationNames[i].toLowerCase(),
+      ),
       child: Container(
         padding: const EdgeInsets.all(18),
         margin: EdgeInsets.only(
@@ -107,83 +119,5 @@ class RegulationCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class CustomSearch extends SearchDelegate {
-  List<String> allData = ["America", "Rusia", "China", "Germany", "Italy"];
-
-  @override
-  List<Widget>? buildActions(BuildContext context) {
-    return [
-      IconButton(
-        onPressed: () {
-          query = "";
-        },
-        icon: const Icon(Icons.clear),
-      ),
-    ];
-  }
-
-  @override
-  Widget? buildLeading(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        close(context, null);
-      },
-      icon: const Icon(Icons.arrow_back),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var data in allData) {
-      if (data.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(data);
-      }
-    }
-
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var data in allData) {
-      if (data.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(data);
-      }
-    }
-
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
-      },
-    );
-  }
-
-  @override
-  ThemeData appBarTheme(BuildContext context) {
-    return super.appBarTheme(context).copyWith(
-          primaryColor: PSColor.primary,
-          textTheme: TextTheme(
-            titleMedium: PSTypography.medium.copyWith(
-              fontSize: 14,
-            ),
-          ),
-        );
   }
 }

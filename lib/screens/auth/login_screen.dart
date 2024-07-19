@@ -33,18 +33,32 @@ class LoginScreen extends GetView<LoginController> {
                 const SizedBox(height: 50),
                 const Text("Email", style: PSTypography.medium),
                 const SizedBox(height: 6),
-                PSTextfield.input(),
+                Obx(
+                  () => PSTextfield.input(
+                    controller: controller.emailController,
+                    readOnly: controller.state.value == LoginState.loading,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 const Text("Password", style: PSTypography.medium),
                 const SizedBox(height: 6),
-                PSTextfield.input(obscureText: true),
+                Obx(
+                  () => PSTextfield.input(
+                    obscureText: true,
+                    controller: controller.passwordController,
+                    readOnly: controller.state.value == LoginState.loading,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
                 const SizedBox(height: 20),
-                PSButton.textOnly(
-                  width: double.infinity,
-                  text: "Masuk",
-                  onTap: () {
-                    Get.toNamed(Routes.home);
-                  },
+                Obx(
+                  () => PSButton.textOnly(
+                    width: double.infinity,
+                    text: "Masuk",
+                    isLoading: controller.state.value == LoginState.loading,
+                    onTap: () async => await controller.login(),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Row(

@@ -14,7 +14,7 @@ class RegulationListScreen extends GetView<RegulationListController> {
           color: PSColor.primary,
         ),
         title: Text(
-          "UU",
+          controller.regulation.toUpperCase(),
           style: PSTypography.semibold.copyWith(
             fontSize: 16,
           ),
@@ -23,12 +23,34 @@ class RegulationListScreen extends GetView<RegulationListController> {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              10,
-              (_) => const RegulationListWidget(),
-            ),
+          child: GetBuilder<RegulationListController>(
+            builder: (controller) {
+              if (controller.state == RegulationState.initial ||
+                  controller.state == RegulationState.loading) {
+                return const LoadingWidget();
+              } else if (controller.state == RegulationState.loaded) {
+                return Column(
+                  children: [
+                    ...controller.regulations
+                        .map((e) => RegulationListWidget(regulation: e))
+                        .toList(),
+                    PSButton.textOnly(
+                      width: double.infinity,
+                      text: "Muat lebih banyak",
+                      isLoading: controller.state == RegulationState.loading,
+                      onTap: () {
+                        controller.page++;
+                        controller.getWebsiteData();
+                      },
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: Text("Tidak ada data!"),
+                );
+              }
+            },
           ),
         ),
       ),
@@ -39,12 +61,15 @@ class RegulationListScreen extends GetView<RegulationListController> {
 class RegulationListWidget extends StatelessWidget {
   const RegulationListWidget({
     super.key,
+    required this.regulation,
   });
+
+  final RegulationModel regulation;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(Routes.regulationDetail),
+      onTap: () => Get.toNamed(Routes.regulationDetail, arguments: regulation),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
         margin: const EdgeInsets.only(bottom: 16),
@@ -65,15 +90,21 @@ class RegulationListWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Row(
+            Row(
               children: [
-                TagWidget(tag: "Undang-Undang"),
-                TagWidget(tag: "2024"),
+                TagWidget(tag: regulation.regulation),
+                TagWidget(tag: regulation.year),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: TagWidget(tag: regulation.initiator),
+                ),
               ],
             ),
             const SizedBox(height: 6),
             Text(
-              "Provinsi Daerah Khusus Jakarta",
+              regulation.title
+                  .replaceAll('<mark>', '')
+                  .replaceAll('</mark>', ''),
               style: PSTypography.medium.copyWith(
                 fontSize: 14,
               ),
@@ -81,12 +112,28 @@ class RegulationListWidget extends StatelessWidget {
             ),
             const SizedBox(height: 2),
             Text(
-              "Undang-Undang Nomor 2 Tahun 2024",
+              regulation.document,
               style: PSTypography.light.copyWith(
                 fontSize: 10,
                 color: PSColor.secondary,
               ),
-            )
+            ),
+            if (regulation.tags != '')
+              Column(
+                children: [
+                  const SizedBox(height: 2),
+                  Text(
+                    'Tags: ${regulation.tags}'
+                        .replaceAll('&amp', '')
+                        .replaceAll(';', ''),
+                    style: PSTypography.light.copyWith(
+                      fontSize: 10,
+                      color: Colors.blue,
+                    ),
+                    maxLines: 2,
+                  ),
+                ],
+              ),
           ],
         ),
       ),
@@ -111,12 +158,11 @@ class TagWidget extends StatelessWidget {
         color: PSColor.primary,
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Center(
-        child: Text(
-          tag,
-          style:
-              PSTypography.regular.copyWith(color: Colors.white, fontSize: 8),
-        ),
+      child: Text(
+        tag,
+        style: PSTypography.regular.copyWith(color: Colors.white, fontSize: 8),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

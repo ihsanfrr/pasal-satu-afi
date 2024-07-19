@@ -3,16 +3,18 @@ part of 'components.dart';
 class PSButton {
   static Widget textOnly({
     EdgeInsetsGeometry? margin,
-    required double width,
+    double? width,
     double? height,
     required String text,
     required Function()? onTap,
     Color? color,
     Color? colorText,
+    Color? colorLoading,
     bool? outline,
+    isLoading = false,
   }) =>
       GestureDetector(
-        onTap: onTap,
+        onTap: isLoading ? null : onTap,
         child: Container(
           margin: margin,
           width: width,
@@ -27,13 +29,19 @@ class PSButton {
             borderRadius: BorderRadius.circular(6),
           ),
           child: Center(
-            child: Text(
-              text,
-              style: PSTypography.light.copyWith(
-                fontWeight: FontWeight.w500,
-                color: colorText ?? Colors.white,
-              ),
-            ),
+            child: isLoading
+                ? CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      colorLoading ?? Colors.white,
+                    ),
+                  )
+                : Text(
+                    text,
+                    style: PSTypography.light.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: colorText ?? Colors.white,
+                    ),
+                  ),
           ),
         ),
       );

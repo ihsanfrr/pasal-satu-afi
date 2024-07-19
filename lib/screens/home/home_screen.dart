@@ -12,7 +12,7 @@ class HomeScreen extends GetView<HomeController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomAppBar(),
+              CustomAppBar(controller: controller),
               const SizedBox(height: 40),
               FeaturedWidget(controller: controller),
               const SizedBox(height: 30),
@@ -20,100 +20,22 @@ class HomeScreen extends GetView<HomeController> {
               const SizedBox(height: 20),
               const Text("Artikel Populer", style: PSTypography.semibold),
               const SizedBox(height: 10),
-              ...List.generate(3, (index) => const ArticleWidget())
+              GetBuilder<HomeController>(
+                builder: (_) {
+                  if (controller.articles == null) {
+                    return const ArticleShimmer();
+                  } else {
+                    return Column(
+                      children: List.generate(
+                        controller.articles!.length,
+                        (i) => ArticleWidget(article: controller.articles![i]),
+                      ),
+                    );
+                  }
+                },
+              )
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class ArticleWidget extends StatelessWidget {
-  const ArticleWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Get.toNamed(Routes.articleDetail),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(15),
-        width: double.infinity,
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              offset: const Offset(0, 0),
-              blurRadius: 10,
-              spreadRadius: 5,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(right: 10),
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                // color: PSColor.primary,
-                borderRadius: BorderRadius.circular(4),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/bola.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 230,
-                  child: Text(
-                    "Belanda Melaju ke Semifinal Pertama dalam 2 Dasawarsa,Nyaris Tersandung di Jalur Paling Ringan",
-                    style: PSTypography.semibold.copyWith(fontSize: 10),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Liputan 6",
-                      style: PSTypography.regular.copyWith(
-                        fontSize: 10,
-                        color: PSColor.secondary,
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Text(
-                        "·",
-                        style: PSTypography.bold.copyWith(
-                          fontSize: 18,
-                          color: PSColor.secondary.withOpacity(0.4),
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "06 Juli 2024",
-                      style: PSTypography.regular.copyWith(
-                        fontSize: 10,
-                        color: PSColor.secondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            )
-          ],
         ),
       ),
     );
@@ -224,7 +146,10 @@ class FeaturedWidget extends StatelessWidget {
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
+    required this.controller,
   });
+
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +164,7 @@ class CustomAppBar extends StatelessWidget {
               style: PSTypography.medium,
             ),
             Text(
-              "Ihsan Fajar Ramadhan",
+              controller.app.user!.displayName!,
               style: PSTypography.semibold.copyWith(
                 fontSize: 20,
               ),

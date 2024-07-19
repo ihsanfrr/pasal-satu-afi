@@ -49,6 +49,12 @@ class AppPages {
       transition: Transition.rightToLeft,
     ),
     GetPage(
+      name: _Paths.regulationSearch,
+      page: () => const RegulationSearchScreen(),
+      binding: RegulationSearchBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: _Paths.article,
       page: () => const ArticleScreen(),
       binding: ArticleBinding(),
@@ -71,6 +77,26 @@ class AppPages {
       page: () => const ChatScreen(),
       binding: ChatBinding(),
       transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Paths.accountInfo,
+      page: () => const AccountInfoScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.setting,
+      page: () => const SettingScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.privacyPolicy,
+      page: () => const PrivacyPolicyScreen(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.aboutDeveloper,
+      page: () => const AboutDeveloperScreen(),
+      transition: Transition.rightToLeft,
     ),
   ];
 }

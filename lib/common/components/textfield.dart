@@ -7,7 +7,9 @@ class PSTextfield {
     FocusNode? focusNode,
     double? width,
     double? height,
+    bool? autofocus,
     TextStyle? style,
+    TextStyle? hintStyle,
     bool? readOnly,
     bool? enabled,
     TextInputType? keyboardType,
@@ -35,6 +37,7 @@ class PSTextfield {
         child: TextField(
           controller: controller,
           focusNode: focusNode,
+          autofocus: autofocus ??= false,
           style: style,
           readOnly: readOnly ??= false,
           enabled: enabled,
@@ -54,7 +57,7 @@ class PSTextfield {
             counterText: '',
             prefixIcon: prefixIcon,
             hintText: hintText,
-            hintStyle: PSTypography.light.copyWith(fontWeight: FontWeight.w500),
+            hintStyle: hintStyle,
             suffixIcon: suffixIcon,
             focusedBorder: focusedBorder ??
                 const OutlineInputBorder(

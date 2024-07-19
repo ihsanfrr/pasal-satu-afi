@@ -1,6 +1,6 @@
 part of '../screens.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({super.key});
 
   @override
@@ -24,13 +24,13 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Ihsan Fajar Ramadhan",
+                    controller.app.user!.displayName!,
                     style: PSTypography.bold.copyWith(
                       fontSize: 22,
                     ),
                   ),
                   Text(
-                    "ihsanfajarrpl@gmail.com",
+                    controller.app.user!.email!,
                     style: PSTypography.medium.copyWith(
                       fontSize: 14,
                       color: PSColor.secondary,
@@ -55,64 +55,24 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Informasi Akun",
-                                style:
-                                    PSTypography.medium.copyWith(fontSize: 14),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                                weight: 5,
-                              ),
-                            ],
-                          ),
+                        ProfileMenuWidget(
+                          name: "Informasi Akun",
+                          onTap: () => Get.toNamed(Routes.accountInfo),
                         ),
                         const Divider(thickness: 1),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Pengaturan",
-                                style:
-                                    PSTypography.medium.copyWith(fontSize: 14),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                                weight: 2,
-                              ),
-                            ],
-                          ),
+                        ProfileMenuWidget(
+                          name: "Pengaturan",
+                          onTap: () => Get.toNamed(Routes.setting),
                         ),
                         const Divider(thickness: 1),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 4),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Kebijakan Privasi",
-                                style:
-                                    PSTypography.medium.copyWith(fontSize: 14),
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 14,
-                                weight: 2,
-                              ),
-                            ],
-                          ),
+                        ProfileMenuWidget(
+                          name: "Kebijakan Privasi",
+                          onTap: () => Get.toNamed(Routes.privacyPolicy),
+                        ),
+                        const Divider(thickness: 1),
+                        ProfileMenuWidget(
+                          name: "Tentang Pengembang",
+                          onTap: () => Get.toNamed(Routes.aboutDeveloper),
                         ),
                       ],
                     ),
@@ -124,25 +84,63 @@ class ProfileScreen extends StatelessWidget {
               left: 0,
               bottom: 60,
               right: 0,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: PSColor.primary,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: Text(
-                    "Keluar",
-                    style: PSTypography.medium.copyWith(
-                      color: Colors.white,
-                      fontSize: 14,
+              child: GestureDetector(
+                onTap: () => controller.signOut(),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: PSColor.primary,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Keluar",
+                      style: PSTypography.medium.copyWith(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),
               ),
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileMenuWidget extends StatelessWidget {
+  const ProfileMenuWidget({
+    super.key,
+    required this.name,
+    this.onTap,
+  });
+
+  final String name;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              name,
+              style: PSTypography.medium.copyWith(fontSize: 14),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 14,
+              weight: 5,
+            ),
           ],
         ),
       ),

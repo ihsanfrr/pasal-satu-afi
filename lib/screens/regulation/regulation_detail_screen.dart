@@ -17,14 +17,13 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Provinsi Daerah Istimewa Yogyakarta",
+              controller.regulation.title,
               style: PSTypography.semibold.copyWith(
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 2),
             Text(
-              "Undang-Undang Nomor 2 Tahun 2024",
+              controller.regulation.document,
               style: PSTypography.light.copyWith(
                 fontSize: 10,
                 color: PSColor.secondary,
@@ -44,7 +43,7 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
                 style: PSTypography.semibold.copyWith(fontSize: 16),
               ),
               const SizedBox(height: 10),
-              const InformationWidget(),
+              InformationWidget(regulation: controller.regulation),
               const SizedBox(height: 20),
               Text(
                 "Hubungan Antar Peraturan",
@@ -52,7 +51,7 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
               ),
               const SizedBox(height: 10),
               const Text(
-                "Tidak ada hubungan antar peraturan.",
+                "Cek melalui alamat url diatas.",
                 style: PSTypography.regular,
               ),
               const SizedBox(height: 20),
@@ -62,7 +61,7 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
               ),
               const SizedBox(height: 10),
               const Text(
-                "1. Undang-Undang Nomor 1 Tahun 2024",
+                "Cek melalui alamat url diatas.",
                 style: PSTypography.regular,
               ),
               const SizedBox(height: 20),
@@ -87,20 +86,32 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
                     ),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.description),
-                        SizedBox(width: 6),
-                        Text(
-                          "1. pp-no-1-tahun-2024.pdf",
-                          style: PSTypography.regular,
+                        const Icon(Icons.description),
+                        const SizedBox(width: 6),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: Text(
+                            controller.regulation.pdfUrl.replaceAll(
+                              "https://peraturan.go.id/files/",
+                              '',
+                            ),
+                            style: PSTypography.regular,
+                            maxLines: 2,
+                          ),
                         ),
                       ],
                     ),
-                    Icon(Icons.download)
+                    GestureDetector(
+                      onTap: () => launchUrl(
+                        Uri.parse(controller.regulation.pdfUrl),
+                      ),
+                      child: const Icon(Icons.download),
+                    )
                   ],
                 ),
               )
@@ -115,7 +126,10 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
 class InformationWidget extends StatelessWidget {
   const InformationWidget({
     super.key,
+    required this.regulation,
   });
+
+  final RegulationModel regulation;
 
   @override
   Widget build(BuildContext context) {
@@ -134,33 +148,34 @@ class InformationWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InfoKeyValueWidget(
             keyText: "Jenis",
-            value: "Peraturan Pemerintah",
+            value: regulation.regulation.toUpperCase(),
           ),
-          Divider(),
+          const Divider(),
           InfoKeyValueWidget(
             keyText: "Dokumen",
-            value: "Peraturan Pemerintah Nomor 1 Tahun 2024",
+            value: regulation.document,
           ),
-          Divider(),
+          const Divider(),
           InfoKeyValueWidget(
             keyText: "Tahun",
-            value: "2024",
+            value: regulation.year,
           ),
-          Divider(),
+          const Divider(),
           InfoKeyValueWidget(
             keyText: "Pemrakarsa",
-            value: "Pemerintah Pusat",
+            value: regulation.initiator,
           ),
-          Divider(),
+          const Divider(),
           InfoKeyValueWidget(
             keyText: "Alamat",
-            value: "https://peraturan.go.id/id/pp-no-1-tahun-2024",
+            value: regulation.url,
             isLink: true,
+            onTap: () => launchUrl(Uri.parse(regulation.url)),
           ),
         ],
       ),
@@ -174,11 +189,13 @@ class InfoKeyValueWidget extends StatelessWidget {
     required this.keyText,
     required this.value,
     this.isLink,
+    this.onTap,
   });
 
   final String keyText;
   final String value;
   final bool? isLink;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -193,16 +210,19 @@ class InfoKeyValueWidget extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: Text(
-            value,
-            style: PSTypography.medium.copyWith(
-              fontSize: 12,
-              color: isLink != null && isLink!
-                  ? PSColor.primary
-                  : PSColor.secondary,
-              decoration: isLink != null && isLink!
-                  ? TextDecoration.underline
-                  : TextDecoration.none,
+          child: GestureDetector(
+            onTap: onTap,
+            child: Text(
+              value,
+              style: PSTypography.medium.copyWith(
+                fontSize: 12,
+                color: isLink != null && isLink!
+                    ? PSColor.primary
+                    : PSColor.secondary,
+                decoration: isLink != null && isLink!
+                    ? TextDecoration.underline
+                    : TextDecoration.none,
+              ),
             ),
           ),
         )

@@ -1,6 +1,7 @@
 part of '../../screens.dart';
 
 class SplashController extends GetxController {
+  AppController app = Get.find<AppController>();
   RxString selectedText = "Solusi hukum terdepan dengan AI.".obs;
 
   @override
@@ -8,10 +9,8 @@ class SplashController extends GetxController {
     super.onInit();
 
     randomText();
-    Future.delayed(
-      const Duration(seconds: 3),
-      () => Get.offNamed(Routes.login),
-    );
+    startTimer();
+    ever(app.isAuthenticated, (_) => Get.offNamed(Routes.splash));
   }
 
   List<String> list = [
@@ -26,4 +25,14 @@ class SplashController extends GetxController {
     int index = random.nextInt(list.length);
     selectedText.value = list[index];
   }
+
+  String isAuthenticated() =>
+      app.isAuthenticated.isTrue ? Routes.home : Routes.login;
+
+  void startTimer() => Future.delayed(
+        const Duration(seconds: 3),
+        () => Get.offNamed(
+          isAuthenticated(),
+        ),
+      );
 }

@@ -11,10 +11,13 @@ class ArticleDetailScreen extends GetView<ArticleDetailController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ImageAndTitleWidget(),
+            ImageAndTitleWidget(article: controller.article),
             Container(
               padding: const EdgeInsets.all(24),
-              child: const Text("Lorem ipsum dolor sit amet as picing."),
+              child: Text(
+                controller.article.content,
+                style: PSTypography.regular,
+              ),
             )
           ],
         ),
@@ -26,7 +29,10 @@ class ArticleDetailScreen extends GetView<ArticleDetailController> {
 class ImageAndTitleWidget extends StatelessWidget {
   const ImageAndTitleWidget({
     super.key,
+    required this.article,
   });
+
+  final ArticleModel article;
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +52,9 @@ class ImageAndTitleWidget extends StatelessWidget {
             offset: const Offset(0, 0),
           ),
         ],
-        image: const DecorationImage(
-          image: AssetImage(
-            "assets/images/bola.png",
+        image: DecorationImage(
+          image: NetworkImage(
+            article.coverImageUrl,
           ),
           fit: BoxFit.cover,
         ),
@@ -85,9 +91,10 @@ class ImageAndTitleWidget extends StatelessWidget {
               ),
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Belanda Melaju ke Semifinal Pertama dalam 2 Dasawarsa, Nyaris Tersandung di Jalur Paling Ringan",
+                  article.title,
                   style: PSTypography.semibold.copyWith(
                     color: Colors.white,
                     fontSize: 12,
@@ -97,7 +104,7 @@ class ImageAndTitleWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Liputan 6",
+                      article.author,
                       style: PSTypography.regular.copyWith(
                         fontSize: 10,
                         color: Colors.white,
@@ -114,7 +121,9 @@ class ImageAndTitleWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "06 Juli 2024",
+                      DateFormat("dd MMM yyyy").format(
+                        article.publishedAt!.toDate(),
+                      ),
                       style: PSTypography.regular.copyWith(
                         fontSize: 10,
                         color: Colors.white,

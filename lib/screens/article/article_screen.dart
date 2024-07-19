@@ -1,6 +1,6 @@
 part of '../screens.dart';
 
-class ArticleScreen extends GetView<ArticleDetailController> {
+class ArticleScreen extends GetView<ArticleController> {
   const ArticleScreen({super.key});
 
   @override
@@ -13,21 +13,41 @@ class ArticleScreen extends GetView<ArticleDetailController> {
         iconTheme: const IconThemeData(
           color: PSColor.primary,
         ),
-        title: Text(
-          "Artikel",
-          style: PSTypography.semibold.copyWith(
-            fontSize: 16,
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Artikel",
+              style: PSTypography.semibold.copyWith(
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              "Informasi Terkini dan Analisis Hukum",
+              style: PSTypography.light.copyWith(
+                fontSize: 10,
+                color: PSColor.secondary,
+              ),
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: Column(
-            children: List.generate(
-              10,
-              (_) => const ArticleWidget(),
-            ),
+          child: GetBuilder<ArticleController>(
+            builder: (_) {
+              if (controller.articles == null) {
+                return const ArticleShimmer();
+              } else {
+                return Column(
+                  children: List.generate(
+                    controller.articles!.length,
+                    (i) => ArticleWidget(article: controller.articles![i]),
+                  ),
+                );
+              }
+            },
           ),
         ),
       ),

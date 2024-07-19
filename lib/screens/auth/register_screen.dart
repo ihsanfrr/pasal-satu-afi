@@ -33,20 +33,42 @@ class RegisterScreen extends GetView<RegisterController> {
                 const SizedBox(height: 50),
                 const Text("Nama Lengkap", style: PSTypography.medium),
                 const SizedBox(height: 6),
-                PSTextfield.input(),
+                Obx(
+                  () => PSTextfield.input(
+                    controller: controller.nameController,
+                    readOnly: controller.state.value == RegisterState.loading,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 const Text("Email", style: PSTypography.medium),
                 const SizedBox(height: 6),
-                PSTextfield.input(),
+                Obx(
+                  () => PSTextfield.input(
+                    controller: controller.emailController,
+                    readOnly: controller.state.value == RegisterState.loading,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 const Text("Password", style: PSTypography.medium),
                 const SizedBox(height: 6),
-                PSTextfield.input(obscureText: true),
+                Obx(
+                  () => PSTextfield.input(
+                    obscureText: true,
+                    controller: controller.passwordController,
+                    readOnly: controller.state.value == RegisterState.loading,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
                 const SizedBox(height: 20),
-                PSButton.textOnly(
-                  width: double.infinity,
-                  text: "Daftar",
-                  onTap: () {},
+                Obx(
+                  () => PSButton.textOnly(
+                    width: double.infinity,
+                    text: "Daftar",
+                    isLoading: controller.state.value == RegisterState.loading,
+                    onTap: () async => await controller.register(),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Row(
