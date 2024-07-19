@@ -13,6 +13,8 @@ abstract class Routes {
   static const article = _Paths.article;
   static const articleDetail = _Paths.articleDetail;
   static const forum = _Paths.forum;
+  static const forumEdit = _Paths.forumEdit;
+  static const forumDiscussion = _Paths.forumDiscussion;
   static const chatAI = _Paths.chatAI;
   static const accountInfo = _Paths.accountInfo;
   static const setting = _Paths.setting;
@@ -33,6 +35,8 @@ abstract class _Paths {
   static const article = '/article';
   static const articleDetail = '/article-detail';
   static const forum = '/forum';
+  static const forumEdit = '/forum-edit';
+  static const forumDiscussion = '/forum-discussion';
   static const chatAI = '/chat-AI';
   static const accountInfo = '/account-info';
   static const setting = '/setting';

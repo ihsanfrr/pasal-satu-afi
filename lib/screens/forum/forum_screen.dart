@@ -38,13 +38,13 @@ class ForumScreen extends GetView<ForumController> {
           child: Column(
             children: [
               SearchForumWidget(),
-              CreateForumWidget(),
+              // CreateForumWidget(),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Get.toNamed(Routes.forumEdit),
         backgroundColor: PSColor.primary,
         child: const Icon(
           Icons.add,

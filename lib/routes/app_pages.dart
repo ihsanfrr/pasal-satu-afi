@@ -73,6 +73,18 @@ class AppPages {
       transition: Transition.rightToLeft,
     ),
     GetPage(
+      name: _Paths.forumEdit,
+      page: () => const ForumEditScreen(),
+      binding: ForumEditBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Paths.forumDiscussion,
+      page: () => const ForumDiscussionScreen(),
+      binding: ForumDiscussionBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: _Paths.chatAI,
       page: () => const ChatScreen(),
       binding: ChatBinding(),
