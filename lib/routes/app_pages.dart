@@ -91,8 +91,21 @@ class AppPages {
       transition: Transition.downToUp,
     ),
     GetPage(
+      name: _Paths.chatAIHistory,
+      page: () => const ChatHistoryScreen(),
+      binding: ChatHistoryBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.chatConversation,
+      page: () => const ChatConversationScreen(),
+      binding: ChatConversationBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: _Paths.accountInfo,
       page: () => const AccountInfoScreen(),
+      binding: ProfilePageBinding(),
       transition: Transition.rightToLeft,
     ),
     GetPage(

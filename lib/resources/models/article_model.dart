@@ -1,6 +1,7 @@
 part of 'models.dart';
 
 class ArticleModel {
+  final DocumentReference? reference;
   final String title;
   final String author;
   final String content;
@@ -12,6 +13,7 @@ class ArticleModel {
   final Timestamp? publishedAt;
 
   ArticleModel({
+    this.reference,
     required this.title,
     required this.author,
     required this.content,
@@ -24,9 +26,10 @@ class ArticleModel {
   });
 
   factory ArticleModel.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final data = snapshot.data()!;
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
     return ArticleModel(
+      reference: doc.reference,
       title: data['title'],
       author: data['author'],
       content: data['content'],

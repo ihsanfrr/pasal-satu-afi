@@ -9,10 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:transparent_image/transparent_image.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 
 import '../common/common.dart';
 import '../routes/routes.dart';
@@ -71,10 +69,18 @@ part './forum/controllers/forum_edit_controller.dart';
 part './forum/controllers/forum_discussion_controller.dart';
 
 part './chat/chat_screen.dart';
+part './chat/chat_history_screen.dart';
 part './chat/bindings/chat_binding.dart';
+part './chat/chat_conversation_screen.dart';
 part './chat/controllers/chat_controller.dart';
+part './chat/bindings/chat_history_binding.dart';
+part './chat/bindings/chat_conversation_binding.dart';
+part './chat/controllers/chat_history_controller.dart';
+part './chat/controllers/chat_conversation_controller.dart';
 
 part './profile/setting_screen.dart';
 part './profile/account_info_screen.dart';
 part './profile/privacy_policy_screen.dart';
 part './profile/about_developer_screen.dart';
+part './profile/bindings/profile_page_binding.dart';
+part './profile/controllers/profile_page_controller.dart';

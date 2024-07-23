@@ -17,7 +17,9 @@ class RegulationDetailScreen extends GetView<RegulationDetailController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              controller.regulation.title,
+              controller.regulation.title
+                  .replaceAll('<mark>', '')
+                  .replaceAll('</mark>', ''),
               style: PSTypography.semibold.copyWith(
                 fontSize: 16,
               ),

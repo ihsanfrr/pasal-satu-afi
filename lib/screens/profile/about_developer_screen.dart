@@ -6,6 +6,7 @@ class AboutDeveloperScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         shadowColor: Colors.grey.withOpacity(0.1),
@@ -69,7 +70,7 @@ class AboutDeveloperScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: "3. Fitria Widyani - AI Developer",
+                      text: "3. Fitria Widyani - AI Engineer",
                       style: PSTypography.medium.copyWith(
                         fontSize: 14,
                       ),

@@ -21,20 +21,22 @@ class RegulationModel {
     required this.pdfUrl,
   });
 
-  factory RegulationModel.fromJson(Map<String, dynamic> json) {
+  factory RegulationModel.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
     return RegulationModel(
-      regulation: json['regulation'],
-      year: json['year'],
-      initiator: json['initiator'],
-      document: json['document'],
-      title: json['title'],
-      tags: json['tags'],
-      url: json['url'],
-      pdfUrl: json['pdfUrl'],
+      regulation: data['regulation'],
+      year: data['year'],
+      initiator: data['initiator'],
+      document: data['document'],
+      title: data['title'],
+      tags: data['tags'],
+      url: data['url'],
+      pdfUrl: data['pdfUrl'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
       'regulation': regulation,
       'year': year,

@@ -23,11 +23,15 @@ class ProfileScreen extends GetView<ProfileController> {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  Text(
-                    controller.app.user!.displayName!,
-                    style: PSTypography.bold.copyWith(
-                      fontSize: 22,
-                    ),
+                  Obx(
+                    () {
+                      return Text(
+                        controller.name.value!,
+                        style: PSTypography.bold.copyWith(
+                          fontSize: 22,
+                        ),
+                      );
+                    },
                   ),
                   Text(
                     controller.app.user!.email!,
@@ -57,7 +61,12 @@ class ProfileScreen extends GetView<ProfileController> {
                       children: [
                         ProfileMenuWidget(
                           name: "Informasi Akun",
-                          onTap: () => Get.toNamed(Routes.accountInfo),
+                          onTap: () async {
+                            var result = await Get.toNamed(Routes.accountInfo);
+                            if (result != null) {
+                              controller.name.value = result as String;
+                            }
+                          },
                         ),
                         const Divider(thickness: 1),
                         ProfileMenuWidget(
@@ -125,7 +134,7 @@ class ProfileMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),

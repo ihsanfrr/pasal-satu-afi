@@ -33,26 +33,37 @@ class ChatScreen extends GetView<ChatController> {
           ],
         ),
       ),
-      body: const SingleChildScrollView(
-        child: ConversationState(),
+      body: SingleChildScrollView(
+        child: MainState(),
+      ),
+      floatingActionButton: Obx(
+        () => FloatingActionButton(
+          onPressed: () {
+            if (controller.sendButtonEnabled.value = true) {
+              controller.textController.clear();
+              Get.toNamed(Routes.chatConversation);
+            }
+          },
+          elevation: 0,
+          backgroundColor: controller.sendButtonEnabled.value
+              ? PSColor.primary
+              : Colors.grey,
+          child: const Icon(
+            Icons.send,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
 }
 
-class ConversationState extends StatelessWidget {
-  const ConversationState({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 class MainState extends StatelessWidget {
-  const MainState({
+  MainState({
     super.key,
   });
+
+  final ChatController controller = Get.find<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +72,9 @@ class MainState extends StatelessWidget {
       children: [
         const GreetingWidget(),
         const SizedBox(height: 30),
-        const SuggestionChatWidget(),
+        SuggestionChatWidget(),
         const SizedBox(height: 30),
-        const HistoryChatWidget(),
+        HistoryChatWidget(),
         const SizedBox(height: 30),
         Container(
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
@@ -85,54 +96,58 @@ class MainState extends StatelessWidget {
             ],
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              PSTextfield.input(
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    width: 1,
-                    color: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    width: 1,
-                    color: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                border: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    width: 1,
-                    color: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.send,
-                    color: PSColor.primary,
-                    size: 30,
-                  ),
-                ],
+              GetBuilder<ChatController>(
+                builder: (_) {
+                  return SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: PSTextfield.input(
+                      controller: controller.textController,
+                      hintText: "Tulis pesan...",
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (p0) => controller.onMessageChanged(p0),
+                      maxLines: 5,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          width: 1,
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
 }
 
 class HistoryChatWidget extends StatelessWidget {
-  const HistoryChatWidget({
+  HistoryChatWidget({
     super.key,
   });
+
+  final ChatController controller = Get.find<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -141,20 +156,23 @@ class HistoryChatWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Terbaru",
-                style: PSTypography.medium,
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: PSColor.primary,
-                size: 24,
-              ),
-            ],
+          InkWell(
+            onTap: () => Get.toNamed(Routes.chatAIHistory),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Terbaru",
+                  style: PSTypography.medium,
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  color: PSColor.primary,
+                  size: 24,
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 20),
           ...List.generate(
@@ -180,9 +198,13 @@ class HistoryChatWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text(
-                    "Siang yang Cerah dan Penuh Semangat",
-                    style: PSTypography.medium.copyWith(fontSize: 13),
+                  Expanded(
+                    child: Text(
+                      controller.chatHistory[i],
+                      style: PSTypography.medium.copyWith(fontSize: 13),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   )
                 ],
               ),
@@ -195,9 +217,11 @@ class HistoryChatWidget extends StatelessWidget {
 }
 
 class SuggestionChatWidget extends StatelessWidget {
-  const SuggestionChatWidget({
+  SuggestionChatWidget({
     super.key,
   });
+
+  final ChatController controller = Get.find<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -206,42 +230,45 @@ class SuggestionChatWidget extends StatelessWidget {
       child: Row(
         children: [
           ...List.generate(
-            4,
-            (i) => Container(
-              padding: const EdgeInsets.all(10),
-              margin: EdgeInsets.only(left: i == 0 ? 24 : 0, right: 10),
-              width: (MediaQuery.of(context).size.width * 0.5),
-              height: (MediaQuery.of(context).size.width * 0.3),
-              decoration: BoxDecoration(
-                color: PSColor.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Stack(
-                children: [
-                  Text(
-                    "Menyelesaikan perdebatan: dimana tempat penyimpanan roti",
-                    style: PSTypography.medium.copyWith(fontSize: 12),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.gavel,
-                          color: PSColor.primary,
-                          size: 16,
+            controller.suggestions.length,
+            (i) => GestureDetector(
+              onTap: () => controller.suggestionChat(controller.suggestions[i]),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                margin: EdgeInsets.only(left: i == 0 ? 24 : 0, right: 10),
+                width: (MediaQuery.of(context).size.width * 0.5),
+                height: (MediaQuery.of(context).size.width * 0.3),
+                decoration: BoxDecoration(
+                  color: PSColor.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Stack(
+                  children: [
+                    Text(
+                      controller.suggestions[i],
+                      style: PSTypography.medium.copyWith(fontSize: 12),
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 35,
+                        height: 35,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.gavel,
+                            color: PSColor.primary,
+                            size: 16,
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

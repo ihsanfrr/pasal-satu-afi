@@ -1,6 +1,7 @@
 part of 'models.dart';
 
 class ConversationModel {
+  final DocumentReference? reference;
   final String questionId;
   final String sender;
   final String text;
@@ -8,6 +9,7 @@ class ConversationModel {
   final Timestamp createdAt;
 
   ConversationModel({
+    this.reference,
     required this.questionId,
     required this.sender,
     required this.text,
@@ -15,8 +17,11 @@ class ConversationModel {
     required this.createdAt,
   });
 
-  factory ConversationModel.fromJson(Map<String, dynamic> data) {
+  factory ConversationModel.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
     return ConversationModel(
+      reference: doc.reference,
       questionId: data['questionId'],
       sender: data['sender'],
       text: data['text'],
@@ -25,7 +30,7 @@ class ConversationModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
       'questionId': questionId,
       'sender': sender,

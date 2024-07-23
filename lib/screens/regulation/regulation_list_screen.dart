@@ -91,13 +91,11 @@ class RegulationListWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 TagWidget(tag: regulation.regulation),
                 TagWidget(tag: regulation.year),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  child: TagWidget(tag: regulation.initiator),
-                ),
+                TagWidget(tag: regulation.initiator),
               ],
             ),
             const SizedBox(height: 6),
@@ -125,7 +123,9 @@ class RegulationListWidget extends StatelessWidget {
                   Text(
                     'Tags: ${regulation.tags}'
                         .replaceAll('&amp', '')
-                        .replaceAll(';', ''),
+                        .replaceAll(';', '')
+                        .replaceAll('<mark>', '')
+                        .replaceAll('</mark>', ''),
                     style: PSTypography.light.copyWith(
                       fontSize: 10,
                       color: Colors.blue,
@@ -151,19 +151,24 @@ class TagWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 4),
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: PSColor.primary,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Text(
-        tag,
-        style: PSTypography.regular.copyWith(color: Colors.white, fontSize: 8),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-    );
+    return tag != ''
+        ? Flexible(
+            child: Container(
+              margin: const EdgeInsets.only(right: 4),
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: PSColor.primary,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Text(
+                tag,
+                style: PSTypography.regular
+                    .copyWith(color: Colors.white, fontSize: 8),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          )
+        : Container();
   }
 }

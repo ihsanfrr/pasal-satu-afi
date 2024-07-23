@@ -1,6 +1,7 @@
 part of 'models.dart';
 
 class ForumModel {
+  final DocumentReference? reference;
   final String title;
   final String description;
   final Map<String, dynamic> user;
@@ -11,6 +12,7 @@ class ForumModel {
   final Timestamp? deletedAt;
 
   ForumModel({
+    this.reference,
     required this.title,
     required this.description,
     required this.user,
@@ -21,8 +23,10 @@ class ForumModel {
     this.deletedAt,
   });
 
-  factory ForumModel.fromJson(Map<String, dynamic> data) {
+  factory ForumModel.fromFirestore(QueryDocumentSnapshot<dynamic> doc) {
+    final data = doc.data();
     return ForumModel(
+      reference: doc.reference,
       title: data['title'],
       description: data['description'],
       user: data['user'],
@@ -34,7 +38,7 @@ class ForumModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
       'title': title,
       'description': description,

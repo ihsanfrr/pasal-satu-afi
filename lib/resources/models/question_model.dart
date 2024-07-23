@@ -1,6 +1,7 @@
 part of 'models.dart';
 
 class QuestionModel {
+  final DocumentReference? reference;
   final String text;
   final String userId;
   final String status;
@@ -9,6 +10,7 @@ class QuestionModel {
   final Timestamp? deletedAt;
 
   QuestionModel({
+    this.reference,
     required this.text,
     required this.userId,
     required this.status,
@@ -17,8 +19,11 @@ class QuestionModel {
     this.deletedAt,
   });
 
-  factory QuestionModel.fromJson(Map<String, dynamic> data) {
+  factory QuestionModel.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
     return QuestionModel(
+      reference: doc.reference,
       text: data['text'],
       userId: data['userId'],
       status: data['status'],
@@ -27,8 +32,7 @@ class QuestionModel {
       deletedAt: data['deletedAt'],
     );
   }
-
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
       'text': text,
       'userId': userId,

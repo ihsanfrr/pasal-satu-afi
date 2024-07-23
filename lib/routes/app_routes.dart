@@ -16,6 +16,8 @@ abstract class Routes {
   static const forumEdit = _Paths.forumEdit;
   static const forumDiscussion = _Paths.forumDiscussion;
   static const chatAI = _Paths.chatAI;
+  static const chatAIHistory = _Paths.chatAIHistory;
+  static const chatConversation = _Paths.chatConversation;
   static const accountInfo = _Paths.accountInfo;
   static const setting = _Paths.setting;
   static const privacyPolicy = _Paths.privacyPolicy;
@@ -38,6 +40,8 @@ abstract class _Paths {
   static const forumEdit = '/forum-edit';
   static const forumDiscussion = '/forum-discussion';
   static const chatAI = '/chat-AI';
+  static const chatAIHistory = '/chat-AI-history';
+  static const chatConversation = '/chat-conversation';
   static const accountInfo = '/account-info';
   static const setting = '/setting';
   static const privacyPolicy = '/privacy-policy';

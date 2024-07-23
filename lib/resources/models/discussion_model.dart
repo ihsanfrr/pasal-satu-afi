@@ -1,6 +1,7 @@
 part of 'models.dart';
 
 class DiscussionModel {
+  final DocumentReference? reference;
   final String forumId;
   final String content;
   final Map<String, dynamic> user;
@@ -9,6 +10,7 @@ class DiscussionModel {
   final Timestamp? deletedAt;
 
   DiscussionModel({
+    this.reference,
     required this.forumId,
     required this.content,
     required this.user,
@@ -17,8 +19,11 @@ class DiscussionModel {
     this.deletedAt,
   });
 
-  factory DiscussionModel.fromJson(Map<String, dynamic> data) {
+  factory DiscussionModel.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
     return DiscussionModel(
+      reference: doc.reference,
       forumId: data['forumId'],
       content: data['content'],
       user: data['user'],
@@ -28,7 +33,7 @@ class DiscussionModel {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestore() {
     return {
       'forumId': forumId,
       'content': content,
